@@ -15,4 +15,4 @@ login_manager.login_view = 'login'
 login_manager.login_message_category = 'alert-info'
 
 
-from comunidadeimpressionadora import routes
+from tempotec import routes

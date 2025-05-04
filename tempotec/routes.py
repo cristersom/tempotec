@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for, flash, request
-from comunidadeimpressionadora import app, database, bcrypt
-from comunidadeimpressionadora.forms import FormLogin, FormCriarConta, FormEditarPerfil
-from comunidadeimpressionadora.models import Usuario
+from tempotec import app, database, bcrypt
+from tempotec.forms import FormLogin, FormCriarConta, FormEditarPerfil
+from tempotec.models import Usuario
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
 import os

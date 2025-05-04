@@ -1,4 +1,4 @@
-from comunidadeimpressionadora import app
+from tempotec import app
 
 if __name__ == '__main__':
     app.run(debug=True)
