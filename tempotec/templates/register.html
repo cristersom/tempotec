@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<div class="container auth-container">
+    <div class="card shadow">
+        <div class="card-body">
+            <h2 class="card-title text-center mb-4">Criar Conta no TempoTec</h2>
+            <form method="POST" action="">
+                {{ form_criarconta.csrf_token }}
+                <div class="mb-3">
+                    {{ form_criarconta.username.label(class="form-label") }}
+                    {{ form_criarconta.username(class="form-control" + (' is-invalid' if form_criarconta.username.errors
+                    else '')) }}
+                    {% for erro in form_criarconta.username.errors %}
+                    <div class="invalid-feedback">{{ erro }}</div>
+                    {% endfor %}
+                </div>
+                <div class="mb-3">
+                    {{ form_criarconta.email.label(class="form-label") }}
+                    {{ form_criarconta.email(class="form-control" + (' is-invalid' if form_criarconta.email.errors else
+                    '')) }}
+                    {% for erro in form_criarconta.email.errors %}
+                    <div class="invalid-feedback">{{ erro }}</div>
+                    {% endfor %}
+                </div>
+                <div class="mb-3">
+                    {{ form_criarconta.senha.label(class="form-label") }}
+                    {{ form_criarconta.senha(class="form-control" + (' is-invalid' if form_criarconta.senha.errors else
+                    '')) }}
+                    {% for erro in form_criarconta.senha.errors %}
+                    <div class="invalid-feedback">{{ erro }}</div>
+                    {% endfor %}
+                </div>
+                <div class="mb-3">
+                    {{ form_criarconta.confirmacao_senha.label(class="form-label") }}
+                    {{ form_criarconta.confirmacao_senha(class="form-control" + (' is-invalid' if
+                    form_criarconta.confirmacao_senha.errors else '')) }}
+                    {% for erro in form_criarconta.confirmacao_senha.errors %}
+                    <div class="invalid-feedback">{{ erro }}</div>
+                    {% endfor %}
+                </div>
+                {{ form_criarconta.botao_submit_criarconta(class="btn btn-success w-100") }}
+            </form>
+            <div class="text-center mt-3">
+                <small>Já tem uma conta? <a href="{{ url_for('login') }}">Entrar</a></small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

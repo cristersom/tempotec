@@ -36,3 +36,105 @@
 .number3 {
     font-weight: 500
 }
+
+.custom-navbar {
+    background: linear-gradient(to right, #4e54c8, #8f94fb);
+}
+
+.nav-link {
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #ffdd57 !important;
+}
+
+.user-card {
+    border-radius: 20px;
+    transition: transform 0.2s;
+}
+
+.user-card:hover {
+    transform: scale(1.02);
+}
+
+.profile-img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.badge-course {
+    font-size: 0.85rem;
+    padding: 0.4em 0.8em;
+}
+
+.user-stats {
+    background-color: #4e54c8;
+    color: white;
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+
+.auth-container {
+    max-width: 500px;
+    margin: 80px auto;
+}
+
+.profile-card {
+    max-width: 800px;
+    border-radius: 20px;
+}
+
+.profile-img {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 5px solid #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.stats-box {
+    background: #4e54c8;
+    color: white;
+    border-radius: 12px;
+    padding: 15px 30px;
+    margin-top: 20px;
+}
+
+.stats-box .stat {
+    text-align: center;
+}
+
+.stats-box .stat span {
+    display: block;
+}
+
+.courses-section {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.hero {
+    background: linear-gradient(to right, #4e54c8, #8f94fb);
+    color: white;
+    padding: 80px 20px;
+    text-align: center;
+    border-radius: 20px;
+    margin-bottom: 40px;
+}
+
+.features .card {
+    border: none;
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+}
+
+.features .card:hover {
+    transform: translateY(-5px);
+}
