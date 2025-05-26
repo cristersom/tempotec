@@ -15,16 +15,31 @@
 
 {% include 'navbar.html' %}
 
+
 <div class="container">
-    {% with mensagens = get_flashed_messages(with_categories=True) %}
-    {% if mensagens %}
-    {% for categoria, mensagem in mensagens %}
-    <div class="alert {{ categoria }}">
-        {{ mensagem }}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="container mt-3">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
+
+    <script>
+        setTimeout(function () {
+            var alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function (alert) {
+                var bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                bsAlert.close();
+            });
+        }, 3000); // 3 seconds
+    </script>
     {% endif %}
     {% endwith %}
+
 </div>
 
 {% block body %}

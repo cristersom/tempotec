@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">
+        <span class="me-2">📓</span> Todos os Posts <span class="ms-2">🌳</span>
+    </h2>
+
+    {% if posts %}
+    <div class="row">
+        {% for post in posts %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.titulo }}</h5>
+                    <p class="card-text text-muted">
+                        {{ post.data_criacao.strftime('%d/%m/%Y %H:%M') }}
+                    </p>
+                    <p class="card-text">
+                        {{ post.corpo[:150] }}{% if post.corpo|length > 150 %}...{% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info text-center">
+        Nenhum post encontrado.
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

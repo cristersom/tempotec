@@ -1,7 +1,27 @@
 {% extends 'base.html' %}
 
 {% block body %}
-    <div class="container">
-        <h1>Criar Post</h1>
+<div class="container d-flex justify-content-center mt-5" style="height: 100vh;">
+    <div class="">
+        <div class="card shadow">
+            <div class="card-body">
+                <h2 class="card-title mb-4 text-center">Criar Novo Post</h2>
+                <form method="POST" action="{{ url_for('criar_post') }}">
+                    <div class="mb-3">
+                        <label for="titulo" class="form-label">Título</label>
+                        <input type="text" class="form-control" id="titulo" name="titulo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="corpo" class="form-label">Corpo do Post</label>
+                        <textarea class="form-control" id="corpo" name="corpo" rows="6" required></textarea>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('home') }}" class="btn btn-secondary">Cancelar</a>
+                        <button type="submit" class="btn btn-primary">Publicar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
+</div>
 {% endblock %}
