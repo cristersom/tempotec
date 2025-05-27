@@ -1,4 +1,5 @@
 from flask import render_template, redirect, url_for, flash, request
+from sqlalchemy.orm import joinedload
 from tempotec import app, database, bcrypt
 from tempotec.forms import FormLogin, FormCriarConta, FormEditarPerfil
 from tempotec.models import Usuario, Post
@@ -95,7 +96,7 @@ def criar_post():
 
 @app.route('/posts')
 def listar_posts():
-    posts = Post.query.order_by(Post.data_criacao.desc()).all()
+    posts = Post.query.options(joinedload(Post.autor)).order_by(Post.data_criacao.desc()).all()
     return render_template('listarposts.html', posts=posts)
 
 

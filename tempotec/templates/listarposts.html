@@ -12,6 +12,16 @@
         <div class="col-md-4 mb-4">
             <div class="card shadow-sm h-100">
                 <div class="card-body">
+                    <!-- User Info -->
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="{{ url_for('static', filename='fotos_perfil/' + post.autor.foto_perfil) }}"
+                             alt="Foto de {{ post.autor.username }}"
+                             class="rounded-circle me-2"
+                             style="width: 40px; height: 40px; object-fit: cover;">
+                        <strong>{{ post.autor.username }}</strong>
+                    </div>
+
+                    <!-- Post Info -->
                     <h5 class="card-title">{{ post.titulo }}</h5>
                     <p class="card-text text-muted">
                         {{ post.data_criacao.strftime('%d/%m/%Y %H:%M') }}
