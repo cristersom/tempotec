@@ -1,27 +1,34 @@
 {% extends 'base.html' %}
 
 {% block body %}
+
 <div class="container mt-5">
     <h2 class="mb-5 text-center">
-        <span class="me-2">💻</span> Todos os Posts <span class="ms-2">🌳</span>
+        💻 Todos os Posts 🌳
     </h2>
 
     {% if posts %}
     <div class="row">
         {% for post in posts %}
         <div class="col-md-4 mb-4">
-            <div class="card shadow-sm h-100">
+            <div class="card shadow-sm h-100 post-card"
+                 data-bs-toggle="modal"
+                 data-bs-target="#postModal"
+                 data-title="{{ post.titulo }}"
+                 data-body="{{ post.corpo|e }}"
+                 data-date="{{ post.data_criacao.strftime('%d/%m/%Y %H:%M') }}"
+                 data-author="{{ post.autor.username }}"
+                 data-email="{{ post.autor.email }}"
+                 data-avatar="{{ url_for('static', filename='fotos_perfil/' ~ post.autor.foto_perfil) }}">
+
                 <div class="card-body">
-                    <!-- User Info -->
                     <div class="d-flex align-items-center mb-3">
-                        <img src="{{ url_for('static', filename='fotos_perfil/' + post.autor.foto_perfil) }}"
-                             alt="Foto de {{ post.autor.username }}"
+                        <img src="{{ url_for('static', filename='fotos_perfil/' ~ post.autor.foto_perfil) }}"
+                             alt="Avatar"
                              class="rounded-circle me-2"
                              style="width: 40px; height: 40px; object-fit: cover;">
                         <strong>{{ post.autor.username }}</strong>
                     </div>
-
-                    <!-- Post Info -->
                     <h5 class="card-title">{{ post.titulo }}</h5>
                     <p class="card-text text-muted">
                         {{ post.data_criacao.strftime('%d/%m/%Y %H:%M') }}
@@ -32,12 +39,56 @@
                 </div>
             </div>
         </div>
-        {% endfor %}
-    </div>
+        {% endfor %} </div>
+
     {% else %}
     <div class="alert alert-info text-center">
         Nenhum post encontrado.
     </div>
     {% endif %}
+
 </div>
+
+<!-- Post Detail Modal -->
+<div class="modal fade" id="postModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-title">Detalhes do Post</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="d-flex align-items-center mb-4">
+                    <img id="modal-avatar"
+                         src=""
+                         class="rounded-circle me-3"
+                         style="width: 60px; height: 60px; object-fit: cover;">
+                    <div>
+                        <h6 id="modal-author" class="mb-0"></h6>
+                        <small id="modal-email" class="text-muted"></small>
+                    </div>
+                </div>
+
+                <div class="mb-2">
+                    <small class="text-muted" id="modal-date"></small>
+                </div>
+
+                <p id="modal-body-text"></p>
+
+                <div class="text-end mt-4">
+                    <button class="btn btn-success" id="apply-button" data-bs-dismiss="modal">
+                        Candidatar-se
+                    </button>
+                </div>
+            </div>
+        </div> </div>
+</div>
+
+<script>
+    document.getElementById('apply-button').addEventListener('click', () => {
+        alert('Você se candidatou com sucesso!');
+    });
+</script>
+
 {% endblock %}
