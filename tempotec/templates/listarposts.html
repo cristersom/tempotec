@@ -14,6 +14,7 @@
             <div class="card shadow-sm h-100 post-card"
                  data-bs-toggle="modal"
                  data-bs-target="#postModal"
+                 data-post-id="{{ post.id }}"
                  data-title="{{ post.titulo }}"
                  data-body="{{ post.corpo|e }}"
                  data-date="{{ post.data_criacao.strftime('%d/%m/%Y %H:%M') }}"
@@ -49,7 +50,6 @@
 
 </div>
 
-<!-- Post Detail Modal -->
 <div class="modal fade" id="postModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
@@ -86,8 +86,47 @@
 </div>
 
 <script>
-    document.getElementById('apply-button').addEventListener('click', () => {
-        alert('Você se candidatou com sucesso!');
+    const postModal = document.getElementById('postModal');
+    const applyButton = document.getElementById('apply-button');
+
+    postModal.addEventListener('show.bs.modal', event => {
+        const card = event.relatedTarget;
+
+        const postId = card.getAttribute('data-post-id');
+
+        applyButton.setAttribute('data-post-id', postId);
+
+        document.getElementById('modal-title').textContent = card.getAttribute('data-title');
+        document.getElementById('modal-body-text').textContent = card.getAttribute('data-body');
+        document.getElementById('modal-date').textContent = card.getAttribute('data-date');
+        document.getElementById('modal-author').textContent = card.getAttribute('data-author');
+        document.getElementById('modal-email').textContent = card.getAttribute('data-email');
+        document.getElementById('modal-avatar').src = card.getAttribute('data-avatar');
+    });
+
+    applyButton.addEventListener('click', () => {
+        const postId = applyButton.getAttribute('data-post-id');  // get postId from button
+
+        fetch('/posts/candidatar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                post_id: postId
+            })
+        })
+        .then(response => {
+            if (response.redirected) {
+                window.location.href = response.url;
+            } else {
+                alert('Você se candidatou com sucesso!');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Ocorreu um erro ao se candidatar.');
+        });
     });
 </script>
 

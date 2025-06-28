@@ -1,8 +1,10 @@
 from flask import render_template, redirect, url_for, flash, request
+from sqlalchemy import select
 from sqlalchemy.orm import joinedload
 from tempotec import app, database, bcrypt
+from tempotec.enums import Status
 from tempotec.forms import FormLogin, FormCriarConta, FormEditarPerfil
-from tempotec.models import Usuario, Post
+from tempotec.models import Usuario, Post, Candidatura, Avaliacao
 from flask_login import login_user, logout_user, current_user, login_required
 import secrets
 import os
@@ -69,7 +71,17 @@ def sair():
 @login_required
 def perfil():
     foto_perfil = url_for('static', filename='fotos_perfil/{}'.format(current_user.foto_perfil))
-    return render_template('perfil.html', foto_perfil=foto_perfil)
+
+    candidaturas_usuario = Candidatura.query \
+        .join(Post, Candidatura.id_post == Post.id) \
+        .filter(Candidatura.id_usuario == current_user.id) \
+        .order_by(Candidatura.data_criacao.desc()) \
+        .all()
+
+
+    return render_template('perfil.html',
+                           foto_perfil=foto_perfil,
+                           candidaturas_usuario=candidaturas_usuario)
 
 
 @app.route('/post/criar', methods=['GET', 'POST'])
@@ -91,13 +103,51 @@ def criar_post():
         database.session.add(novo_post)
         database.session.commit()
         flash('Post criado com sucesso!', 'success')
-        return redirect(url_for('home'))  # ou qualquer página inicial
+        return redirect(url_for('home'))
     return render_template('criarpost.html')
+
 
 @app.route('/posts')
 def listar_posts():
-    posts = Post.query.options(joinedload(Post.autor)).order_by(Post.data_criacao.desc()).all()
+    subquery = select(Candidatura.id_post).where(Candidatura.id_usuario == current_user.id)
+
+    posts = Post.query.options(joinedload(Post.autor)) \
+        .filter(Post.id_usuario != current_user.id) \
+        .filter(Post.id.not_in(subquery)) \
+        .order_by(Post.data_criacao.desc()) \
+        .all()
     return render_template('listarposts.html', posts=posts)
+
+
+@app.route('/posts/candidatar', methods=['POST'])
+def candidatar_post():
+    candidatura = Candidatura(
+        id_usuario=current_user.id,
+        id_post=request.form.get('post_id'),
+    )
+    database.session.add(candidatura)
+    database.session.commit()
+    flash('Candidatura realizada com sucesso!', 'success')
+    return redirect(url_for('listar_posts'))
+
+
+@app.route('/aceitar_candidato', methods=['POST'])
+@login_required
+def aceitar_candidato():
+    candidatura_id = request.form.get('candidatura_id')
+    candidatura = Candidatura.query.get_or_404(candidatura_id)
+
+    candidatura.status = Status.APROVADO
+
+    Candidatura.query.filter(
+        Candidatura.id_post == candidatura.id_post,
+        Candidatura.id != candidatura.id
+    ).update({Candidatura.status: Status.REJEITADO}, synchronize_session='fetch')
+
+    database.session.commit()
+
+    flash(f'Candidato {candidatura.usuario.username} aceito com sucesso!', 'success')
+    return redirect(url_for('home'))
 
 
 def salvar_imagem(imagem):
@@ -140,3 +190,36 @@ def editar_perfil():
         form.username.data = current_user.username
     foto_perfil = url_for('static', filename='fotos_perfil/{}'.format(current_user.foto_perfil))
     return render_template('editarperfil.html', foto_perfil=foto_perfil, form=form)
+
+
+@app.route('/avaliar_usuario', methods=['POST'])
+@login_required
+def avaliar_usuario():
+    id_usuario = request.form.get('avaliado_id')
+    id_post = request.form.get('post_id')
+    nota = int(request.form.get('nota'))
+
+    # Optional: prevent duplicate evaluations
+    existing = Avaliacao.query.filter_by(
+        id_usuario=id_usuario,
+        id_post=id_post,
+        id_avaliador=current_user.id
+    ).first()
+
+    if existing:
+        flash('Você já avaliou este usuário.', 'info')
+        return redirect(request.referrer)
+
+    avaliacao = Avaliacao(
+        id_post=id_post,
+        id_usuario=id_usuario,
+        id_avaliador=current_user.id,
+        nota=nota
+    )
+    database.session.add(avaliacao)
+    database.session.commit()
+
+    flash('Avaliação registrada com sucesso!', 'success')
+    return redirect(request.referrer)
+
+
