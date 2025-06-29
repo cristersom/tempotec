@@ -147,7 +147,7 @@ def aceitar_candidato():
     database.session.commit()
 
     flash(f'Candidato {candidatura.usuario.username} aceito com sucesso!', 'success')
-    return redirect(url_for('home'))
+    return redirect(url_for('perfil'))
 
 
 def salvar_imagem(imagem):
@@ -199,7 +199,6 @@ def avaliar_usuario():
     id_post = request.form.get('post_id')
     nota = int(request.form.get('nota'))
 
-    # Optional: prevent duplicate evaluations
     existing = Avaliacao.query.filter_by(
         id_usuario=id_usuario,
         id_post=id_post,

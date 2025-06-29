@@ -1,80 +1,72 @@
-{% extends 'perfil.html' %}
-
-{% block form_editar_perfil %}
+{% extends 'perfil.html' %} {% block form_editar_perfil %}
 
 <div class="container my-4">
-    <div class="shadow-sm">
-        <div class="card-body">
-            <h3 class="card-title mb-4">Editar Perfil</h3>
-            <form method="POST" action="" enctype="multipart/form-data" novalidate>
-                {{ form.csrf_token }}
-                <fieldset>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.username.id }}" class="form-label">{{ form.username.label.text
-                                }}</label>
-                            {% if form.username.errors %}
-                            {{ form.username(class="form-control is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for erro in form.username.errors %}
-                                {{ erro }}
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                            {{ form.username(class="form-control") }}
-                            {% endif %}
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="{{ form.email.id }}" class="form-label">{{ form.email.label.text }}</label>
-                            {% if form.email.errors %}
-                            {{ form.email(class="form-control is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for erro in form.email.errors %}
-                                {{ erro }}
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                            {{ form.email(class="form-control") }}
-                            {% endif %}
-                        </div>
-                    </div>
+  <div class="shadow-sm">
+    <div class="card-body">
+      <h3 class="card-title mb-4">Editar Perfil</h3>
+      <form method="POST" action="" enctype="multipart/form-data" novalidate>
+        {{ form.csrf_token }}
+        <fieldset>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="{{ form.username.id }}" class="form-label"
+                >{{ form.username.label.text }}</label
+              >
+              {% if form.username.errors %} {{ form.username(class="form-control
+              is-invalid") }}
+              <div class="invalid-feedback">
+                {% for erro in form.username.errors %} {{ erro }} {% endfor %}
+              </div>
+              {% else %} {{ form.username(class="form-control") }} {% endif %}
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="{{ form.email.id }}" class="form-label"
+                >{{ form.email.label.text }}</label
+              >
+              {% if form.email.errors %} {{ form.email(class="form-control
+              is-invalid") }}
+              <div class="invalid-feedback">
+                {% for erro in form.email.errors %} {{ erro }} {% endfor %}
+              </div>
+              {% else %} {{ form.email(class="form-control") }} {% endif %}
+            </div>
+          </div>
 
-                    <div class="mb-4">
-                        <label for="{{ form.foto_perfil.id }}" class="form-label">{{ form.foto_perfil.label.text
-                            }}</label>
-                        {{ form.foto_perfil(class="form-control") }}
-                        {% if form.foto_perfil.errors %}
-                        <div class="text-danger mt-1">
-                            {% for erro in form.foto_perfil.errors %}
-                            {{ erro }}<br>
-                            {% endfor %}
-                        </div>
-                        {% endif %}
-                    </div>
+          <div class="mb-4">
+            <label for="{{ form.foto_perfil.id }}" class="form-label"
+              >{{ form.foto_perfil.label.text }}</label
+            >
+            {{ form.foto_perfil(class="form-control") }} {% if
+            form.foto_perfil.errors %}
+            <div class="text-danger mt-1">
+              {% for erro in form.foto_perfil.errors %} {{ erro }}<br />
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
 
-                    <hr>
+          <hr />
 
-                    <h5 class="mb-3">Cursos</h5>
-                    <div class="row">
-                        {% for campo in form %}
-                        {% if 'curso_' in campo.name %}
-                        <div class="col-6 col-md-4 mb-2">
-                            <div class="form-check">
-                                {{ campo(class="form-check-input", id=campo.id) }}
-                                <label class="form-check-label" for="{{ campo.id }}">
-                                    {{ campo.label.text }}
-                                </label>
-                            </div>
-                        </div>
-                        {% endif %}
-                        {% endfor %}
-                    </div>
-                </fieldset>
+          <h5 class="mb-3">Cursos</h5>
+          <div class="row">
+            {% for campo in form %} {% if 'curso_' in campo.name %}
+            <div class="col-6 col-md-4 mb-2">
+              <div class="form-check">
+                {{ campo(class="form-check-input", id=campo.id) }}
+                <label class="form-check-label" for="{{ campo.id }}">
+                  {{ campo.label.text }}
+                </label>
+              </div>
+            </div>
+            {% endif %} {% endfor %}
+          </div>
+        </fieldset>
 
-                <button type="submit" class="btn btn-primary mt-3">{{ form.botao_submit_editarperfil.label.text }}
-                </button>
-            </form>
-        </div>
+        <button type="submit" class="btn btn-primary mt-3">
+          {{ form.botao_submit_editarperfil.label.text }}
+        </button>
+      </form>
     </div>
+  </div>
 </div>
 {% endblock %}

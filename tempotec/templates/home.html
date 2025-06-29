@@ -1,17 +1,26 @@
-{% extends 'base.html' %}
-
-{% block body %}
+{% extends 'base.html' %} {% block body %}
 
 <div class="container mt-5">
   <div class="hero shadow-lg">
     <h1 class="display-4 fw-bold">Bem-vindo ao TempoTec</h1>
-    <p class="lead mt-3">Conectando você com especialistas em tecnologia para transformar ideias em realidade.</p>
+    <p class="lead mt-3">
+      Conectando você com especialistas em tecnologia para transformar ideias em
+      realidade.
+    </p>
 
     {% if current_user.is_authenticated %}
-    <a href="{{ url_for('listar_posts') }}" class="btn btn-light btn-lg mt-3 me-2">Verificar solicitações</a>
+    <a
+      href="{{ url_for('listar_posts') }}"
+      class="btn btn-light btn-lg mt-3 me-2"
+      >Verificar solicitações</a
+    >
     {% else %}
-     <a href="{{ url_for('login') }}" class="btn btn-light btn-lg mt-3 me-2">Entrar</a>
-    <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg mt-3">Criar Conta</a>
+    <a href="{{ url_for('login') }}" class="btn btn-light btn-lg mt-3 me-2"
+      >Entrar</a
+    >
+    <a href="{{ url_for('login') }}" class="btn btn-outline-light btn-lg mt-3"
+      >Criar Conta</a
+    >
     {% endif %}
   </div>
 
@@ -20,7 +29,10 @@
       <div class="card h-100 shadow-sm">
         <div class="card-body">
           <h5 class="card-title">Encontre Profissionais</h5>
-          <p class="card-text">Busque por desenvolvedores, designers e especialistas para seus projetos.</p>
+          <p class="card-text">
+            Busque por desenvolvedores, designers e especialistas para seus
+            projetos.
+          </p>
         </div>
       </div>
     </div>
@@ -29,7 +41,9 @@
       <div class="card h-100 shadow-sm">
         <div class="card-body">
           <h5 class="card-title">Compartilhe Conhecimento</h5>
-          <p class="card-text">Publique artigos, tutoriais e dicas técnicas para a comunidade.</p>
+          <p class="card-text">
+            Publique artigos, tutoriais e dicas técnicas para a comunidade.
+          </p>
         </div>
       </div>
     </div>
@@ -38,7 +52,9 @@
       <div class="card h-100 shadow-sm">
         <div class="card-body">
           <h5 class="card-title">Conecte-se</h5>
-          <p class="card-text">Interaja com outros usuários e construa sua rede de tecnologia.</p>
+          <p class="card-text">
+            Interaja com outros usuários e construa sua rede de tecnologia.
+          </p>
         </div>
       </div>
     </div>

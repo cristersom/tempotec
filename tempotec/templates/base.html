@@ -1,78 +1,87 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>TempoTec</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='main.css') }}"
+    />
 
-    {% block head %}
-    {% endblock %}
-</head>
-<body>
+    {% block head %} {% endblock %}
+  </head>
+  <body>
+    {% include 'navbar.html' %}
 
-{% include 'navbar.html' %}
-
-
-<div class="container">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-    <div class="container mt-3">
+    <div class="container">
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %}
+      <div class="container mt-3">
         {% for category, message in messages %}
-        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div
+          class="alert alert-{{ category }} alert-dismissible fade show"
+          role="alert"
+        >
+          {{ message }}
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+            aria-label="Close"
+          ></button>
         </div>
         {% endfor %}
+      </div>
+
+      <script>
+        setTimeout(function () {
+          var alerts = document.querySelectorAll(".alert");
+          alerts.forEach(function (alert) {
+            var bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+            bsAlert.close();
+          });
+        }, 3000); // 3 seconds
+      </script>
+      {% endif %} {% endwith %}
     </div>
 
+    {% block body %} {% endblock %}
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+      crossorigin="anonymous"
+    ></script>
+
     <script>
-        setTimeout(function () {
-            var alerts = document.querySelectorAll('.alert');
-            alerts.forEach(function (alert) {
-                var bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
-                bsAlert.close();
-            });
-        }, 3000); // 3 seconds
-    </script>
-    {% endif %}
-    {% endwith %}
+      document.addEventListener("DOMContentLoaded", () => {
+        const cards = document.querySelectorAll(".post-card");
+        cards.forEach((card) => {
+          card.addEventListener("click", () => {
+            const title = card.getAttribute("data-title");
+            const body = card.getAttribute("data-body");
+            const date = card.getAttribute("data-date");
+            const author = card.getAttribute("data-author");
+            const email = card.getAttribute("data-email");
+            const avatar = card.getAttribute("data-avatar");
 
-</div>
-
-{% block body %}
-{% endblock %}
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
-        crossorigin="anonymous"></script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const cards = document.querySelectorAll('.post-card');
-        cards.forEach(card => {
-            card.addEventListener('click', () => {
-// Get data from card
-                const title = card.getAttribute('data-title');
-                const body = card.getAttribute('data-body');
-                const date = card.getAttribute('data-date');
-                const author = card.getAttribute('data-author');
-                const email = card.getAttribute('data-email');
-                const avatar = card.getAttribute('data-avatar');
-
-// Set modal content
-                document.getElementById('modal-title').textContent = title;
-                document.getElementById('modal-body-text').textContent = body;
-                document.getElementById('modal-date').textContent = date;
-                document.getElementById('modal-author').textContent = author;
-                document.getElementById('modal-email').textContent = email;
-                document.getElementById('modal-avatar').src = avatar;
-            });
+            document.getElementById("modal-title").textContent = title;
+            document.getElementById("modal-body-text").textContent = body;
+            document.getElementById("modal-date").textContent = date;
+            document.getElementById("modal-author").textContent = author;
+            document.getElementById("modal-email").textContent = email;
+            document.getElementById("modal-avatar").src = avatar;
+          });
         });
-    });
-</script>
-
-</body>
+      });
+    </script>
+  </body>
 </html>

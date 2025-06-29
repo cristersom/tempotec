@@ -1,36 +1,40 @@
-{% extends 'base.html' %}
-{% block body %}
+{% extends 'base.html' %} {% block body %}
 
 <div class="container auth-container">
-    <div class="card shadow">
-        <div class="card-body">
-            <h2 class="card-title text-center mb-4">Entrar no TempoTec</h2>
-            <form method="POST" action="">
-                {{ form_login.csrf_token }}
-                <div class="mb-3">
-                    {{ form_login.email.label(class="form-label") }}
-                    {{ form_login.email(class="form-control" + (' is-invalid' if form_login.email.errors else '')) }}
-                    {% for erro in form_login.email.errors %}
-                    <div class="invalid-feedback">{{ erro }}</div>
-                    {% endfor %}
-                </div>
-                <div class="mb-3">
-                    {{ form_login.senha.label(class="form-label") }}
-                    {{ form_login.senha(class="form-control" + (' is-invalid' if form_login.senha.errors else '')) }}
-                    {% for erro in form_login.senha.errors %}
-                    <div class="invalid-feedback">{{ erro }}</div>
-                    {% endfor %}
-                </div>
-                <div class="form-check mb-3">
-                    {{ form_login.lembrar_dados(class="form-check-input") }}
-                    {{ form_login.lembrar_dados.label(class="form-check-label") }}
-                </div>
-                {{ form_login.botao_submit_login(class="btn btn-primary w-100") }}
-            </form>
-            <div class="text-center mt-3">
-                <small>Não tem uma conta? <a href="{{ url_for('register') }}">Crie agora</a></small>
-            </div>
+  <div class="card shadow">
+    <div class="card-body">
+      <h2 class="card-title text-center mb-4">Entrar no TempoTec</h2>
+      <form method="POST" action="">
+        {{ form_login.csrf_token }}
+        <div class="mb-3">
+          {{ form_login.email.label(class="form-label") }} {{
+          form_login.email(class="form-control" + (' is-invalid' if
+          form_login.email.errors else '')) }} {% for erro in
+          form_login.email.errors %}
+          <div class="invalid-feedback">{{ erro }}</div>
+          {% endfor %}
         </div>
+        <div class="mb-3">
+          {{ form_login.senha.label(class="form-label") }} {{
+          form_login.senha(class="form-control" + (' is-invalid' if
+          form_login.senha.errors else '')) }} {% for erro in
+          form_login.senha.errors %}
+          <div class="invalid-feedback">{{ erro }}</div>
+          {% endfor %}
+        </div>
+        <div class="form-check mb-3">
+          {{ form_login.lembrar_dados(class="form-check-input") }} {{
+          form_login.lembrar_dados.label(class="form-check-label") }}
+        </div>
+        {{ form_login.botao_submit_login(class="btn btn-primary w-100") }}
+      </form>
+      <div class="text-center mt-3">
+        <small
+          >Não tem uma conta?
+          <a href="{{ url_for('register') }}">Crie agora</a></small
+        >
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %}

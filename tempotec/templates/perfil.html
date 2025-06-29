@@ -212,7 +212,7 @@
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal-title">Detalhes do Post</h5>
+        <h5 class="modal-title" id="post-modal-title">Detalhes do Post</h5>
         <button
           type="button"
           class="btn-close"
@@ -256,18 +256,19 @@
       <div class="modal-body">
         <div class="d-flex align-items-center mb-3">
           <img
-            id="modal-avatar"
-            src=""
-            alt="Foto de perfil"
+            id="candidate-modal-avatar"
             class="rounded-circle me-3"
             style="width: 60px; height: 60px; object-fit: cover"
           />
           <div>
-            <h6 id="modal-username" class="mb-0"></h6>
-            <small id="modal-email" class="text-muted"></small>
+            <h6 id="candidate-modal-username" class="mb-0"></h6>
+            <small id="candidate-modal-email" class="text-muted"></small>
           </div>
         </div>
-        <div id="modal-media-avaliacao" class="mt-2 text-warning fs-5"></div>
+        <div
+          id="candidate-modal-media-avaliacao"
+          class="mt-2 text-warning fs-5"
+        ></div>
       </div>
     </div>
   </div>
@@ -282,9 +283,9 @@
     {% for candidatura in candidaturas_usuario %}
     <a
       href="#"
-      class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+      class="list-group-item list-group-item-action d-flex justify-content-between align-items-center applied-post"
       data-bs-toggle="modal"
-      data-bs-target="#postModal"
+      data-bs-target="#appliedPostModal"
       data-title="{{ candidatura.post.titulo }}"
       data-body="{{ candidatura.post.corpo|e }}"
       data-date="{{ candidatura.post.data_criacao.strftime('%d/%m/%Y %H:%M') }}"
@@ -315,45 +316,97 @@
   {% endif %}
 </div>
 
-{% endblock %}
+<!-- Projetos Aplicados Modal -->
+<div class="modal fade" id="appliedPostModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="post-modal-title">Detalhes do Projeto</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Fechar"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex align-items-center mb-4">
+          <img
+            id="modal-avatar"
+            src=""
+            class="rounded-circle me-3"
+            style="width: 60px; height: 60px; object-fit: cover"
+          />
+          <div>
+            <h6 id="modal-author" class="mb-0"></h6>
+            <small id="modal-email" class="text-muted"></small>
+          </div>
+        </div>
+        <p class="text-muted" id="modal-date"></p>
+        <p id="modal-body-text"></p>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Modal JavaScript -->
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const cards = document.querySelectorAll(".post-card");
-    cards.forEach((card) => {
+    // Post modal
+    document.querySelectorAll(".post-card").forEach((card) => {
       card.addEventListener("click", () => {
-        document.getElementById("modal-title").textContent =
-          card.getAttribute("data-title");
+        document.getElementById("modal-title").textContent = card.dataset.title;
         document.getElementById("modal-body-text").textContent =
-          card.getAttribute("data-body");
-        document.getElementById("modal-date").textContent =
-          card.getAttribute("data-date");
+          card.dataset.body;
+        document.getElementById("modal-date").textContent = card.dataset.date;
         document.getElementById("modal-author").textContent =
-          card.getAttribute("data-author");
-        document.getElementById("modal-email").textContent =
-          card.getAttribute("data-email");
-        document.getElementById("modal-avatar").src =
-          card.getAttribute("data-avatar");
+          card.dataset.author;
+        document.getElementById("modal-email").textContent = card.dataset.email;
+        document.getElementById("modal-avatar").src = card.dataset.avatar;
       });
     });
 
+    // Projetos aplicados modal
+    const modal = document.getElementById("appliedPostModal");
+    modal.addEventListener("show.bs.modal", function (event) {
+      const trigger = event.relatedTarget;
+
+      const title = trigger.getAttribute("data-title");
+      const body = trigger.getAttribute("data-body");
+      const date = trigger.getAttribute("data-date");
+      const author = trigger.getAttribute("data-author");
+      const email = trigger.getAttribute("data-email");
+      const avatar = trigger.getAttribute("data-avatar");
+
+      modal.querySelector("#post-modal-title").textContent = title;
+      modal.querySelector("#modal-body-text").textContent = body;
+      modal.querySelector("#modal-date").textContent = `Postado em ${date}`;
+      modal.querySelector("#modal-author").textContent = author;
+      modal.querySelector("#modal-email").textContent = email;
+      modal.querySelector("#modal-avatar").src = avatar;
+    });
+
     document.querySelectorAll(".candidate-item").forEach((item) => {
-      item.addEventListener("click", () => {
-        const username = item.dataset.username;
-        const email = item.dataset.email;
-        const avatar = item.dataset.avatar;
-        const media = parseFloat(item.dataset.media);
+      item.addEventListener("click", (e) => {
+        if (["BUTTON", "INPUT", "FORM"].includes(e.target.tagName)) return;
 
-        document.getElementById("modal-username").textContent = username;
-        document.getElementById("modal-email").textContent = email;
-        document.getElementById("modal-avatar").src = avatar;
+        const username = item.dataset.username || "Desconhecido";
+        const email = item.dataset.email || "";
+        const avatar = item.dataset.avatar || "";
+        const media = parseFloat(item.dataset.media || "0");
 
-        // Render stars
-        const starContainer = document.getElementById("modal-media-avaliacao");
+        document.getElementById("candidate-modal-username").textContent =
+          username;
+        document.getElementById("candidate-modal-email").textContent = email;
+        document.getElementById("candidate-modal-avatar").src = avatar;
+
+        const starContainer = document.getElementById(
+          "candidate-modal-media-avaliacao"
+        );
+        starContainer.innerHTML = "";
+
         const fullStars = Math.floor(media);
         const halfStar = media - fullStars >= 0.5;
-        starContainer.innerHTML = "";
 
         for (let i = 0; i < fullStars; i++) {
           starContainer.innerHTML += "⭐";
@@ -369,3 +422,5 @@
     });
   });
 </script>
+
+{% endblock %}
