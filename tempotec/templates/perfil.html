@@ -300,11 +300,10 @@
         </div>
       </div>
       <span
-        class="badge {% if candidatura.status == 0 %} bg-secondary {% elif candidatura.status == 1 %} bg-warning text-dark {% elif candidatura.status == 2 %} bg-success {% endif %}"
+        class="badge {% if candidatura.status == 0 %} bg-secondary {% elif candidatura.status == 1 %} bg-success {% elif candidatura.status == 2 %} bg-warning text-dark {% endif %}"
       >
         {% if candidatura.status == 0 %} Pendente {% elif candidatura.status ==
-        1 %} Em Andamento {% elif candidatura.status == 2 %} Concluído {% endif
-        %}
+        1 %} Concluído {% elif candidatura.status == 2 %} Recusado {% endif %}
       </span>
     </a>
     {% endfor %}
@@ -355,7 +354,8 @@
     // Post modal
     document.querySelectorAll(".post-card").forEach((card) => {
       card.addEventListener("click", () => {
-        document.getElementById("modal-title").textContent = card.dataset.title;
+        document.getElementById("post-modal-title").textContent =
+          card.dataset.title;
         document.getElementById("modal-body-text").textContent =
           card.dataset.body;
         document.getElementById("modal-date").textContent = card.dataset.date;

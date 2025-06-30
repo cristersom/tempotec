@@ -215,7 +215,17 @@ def avaliar_usuario():
         id_avaliador=current_user.id,
         nota=nota
     )
+
+    candidatura = Candidatura.query.filter_by(
+        id_usuario=id_usuario,
+        id_post=id_post
+    ).first()
+
+    if candidatura:
+        candidatura.status = Status.APROVADO
+
     database.session.add(avaliacao)
+    database.session.add(candidatura)
     database.session.commit()
 
     flash('Avaliação registrada com sucesso!', 'success')
