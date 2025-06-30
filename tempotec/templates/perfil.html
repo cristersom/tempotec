@@ -71,8 +71,6 @@
     <div class="col-md-4 mb-4">
       <div
         class="card post-card shadow-sm h-100"
-        data-bs-toggle="modal"
-        data-bs-target="#postModal"
         data-title="{{ post.titulo }}"
         data-body="{{ post.corpo|e }}"
         data-date="{{ post.data_criacao.strftime('%d/%m/%Y %H:%M') }}"
@@ -80,7 +78,11 @@
         data-email="{{ current_user.email }}"
         data-avatar="{{ url_for('static', filename='fotos_perfil/' ~ current_user.foto_perfil) }}"
       >
-        <div class="card-body">
+        <div
+          class="card-body"
+          data-bs-toggle="modal"
+          data-bs-target="#postModal"
+        >
           <div class="d-flex align-items-center mb-3">
             <img
               src="{{ url_for('static', filename='fotos_perfil/' ~ current_user.foto_perfil) }}"
@@ -107,15 +109,13 @@
             = candidatura_aceita[0] %}
             <li
               class="list-group-item d-flex justify-content-between align-items-center candidate-item"
-              data-bs-toggle="modal"
-              data-bs-target="#candidateModal"
               data-username="{{ candidatura.usuario.username }}"
               data-email="{{ candidatura.usuario.email }}"
               data-avatar="{{ url_for('static', filename='fotos_perfil/' ~ candidatura.usuario.foto_perfil) }}"
               data-media="{{ candidatura.usuario.media_avaliacao() }}"
             >
               <strong>
-                <span>
+                <span data-bs-toggle="modal" data-bs-target="#candidateModal">
                   {{ candidatura.usuario.username }} {% set avg =
                   candidatura.usuario.media_avaliacao() %} {% for _ in
                   range(avg|int) %} ⭐ {% endfor %} {% if avg - (avg|int) >= 0.5
@@ -386,9 +386,14 @@
       modal.querySelector("#modal-avatar").src = avatar;
     });
 
+    // Candidates modal
     document.querySelectorAll(".candidate-item").forEach((item) => {
       item.addEventListener("click", (e) => {
-        if (["BUTTON", "INPUT", "FORM"].includes(e.target.tagName)) return;
+        if (["BUTTON", "INPUT", "FORM"].includes(e.target.tagName)) {
+          event.stopPropagation(); // stops modal trigger
+          event.preventDefault();
+          return;
+        }
 
         const username = item.dataset.username || "Desconhecido";
         const email = item.dataset.email || "";
