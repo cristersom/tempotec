@@ -164,14 +164,13 @@
             {% else %} {% for candidatura in post.candidaturas %}
             <li
               class="list-group-item d-flex justify-content-between align-items-center candidate-item"
-              data-bs-toggle="modal"
-              data-bs-target="#candidateModal"
               data-username="{{ candidatura.usuario.username }}"
               data-email="{{ candidatura.usuario.email }}"
               data-avatar="{{ url_for('static', filename='fotos_perfil/' ~ candidatura.usuario.foto_perfil) }}"
               data-media="{{ candidatura.usuario.media_avaliacao() }}"
             >
-              <div class="d-flex flex-column">
+              <div      data-bs-toggle="modal"
+              data-bs-target="#candidateModal" class="d-flex flex-column">
                 <strong>{{ candidatura.usuario.username }}</strong>
                 <div>
                   {% set avg = candidatura.usuario.media_avaliacao() %} {% for _
@@ -389,12 +388,6 @@
     // Candidates modal
     document.querySelectorAll(".candidate-item").forEach((item) => {
       item.addEventListener("click", (e) => {
-        if (["BUTTON", "INPUT", "FORM"].includes(e.target.tagName)) {
-          event.stopPropagation(); // stops modal trigger
-          event.preventDefault();
-          return;
-        }
-
         const username = item.dataset.username || "Desconhecido";
         const email = item.dataset.email || "";
         const avatar = item.dataset.avatar || "";
